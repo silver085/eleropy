@@ -60,4 +60,4 @@ class conf():
     checkFreq = 300  # check blind state every n seconds
     wdtTimeout = 400000  # esp32 only - in msec, the watchdog timeout > checkFreq time
     sleepTime = 0.01  # seconds to sleep if no message received, RPi only, so we don't hog a cpu
-    rawTrace = False  # print all bytes sent/received in raw hex
+    rawTrace = True  # print all bytes sent/received in raw hex

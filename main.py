@@ -16,7 +16,7 @@ import paho.mqtt.client as mqtt
 # mqtt
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-    print(f"On message: {client} {userdata} {msg}")
+    print(f"On message: User: {userdata} topic: {msg.topic} msg: {msg.payload}")
     command = msg.payload.decode("utf-8").rstrip()
     topic = msg.topic.rstrip()
     print(topic + " " + command)

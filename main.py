@@ -17,7 +17,6 @@ import paho.mqtt.client as mqtt
 # mqtt
 # The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
-
     command = msg.payload.decode("utf-8").rstrip()
     topic = msg.topic.rstrip()
     print(topic + " " + command)
@@ -55,11 +54,12 @@ def on_message(client, userdata, msg):
 
 # main
 # enable watchdog timer.
-#wdt = WDT(timeout=conf.wdtTimeout)
-#wdt.feed()
+# wdt = WDT(timeout=conf.wdtTimeout)
+# wdt.feed()
 
 def on_connect(client, userdata, flags, rc):
     client.subscribe(conf.mqtt_command_topic + "#")
+    client.loop_start()
 
 radio = cc1101(spibus=conf.spibus, spics=conf.spics, speed=conf.speed, gdo0=conf.gdo0, gdo2=conf.gdo2)
 elero = eleroProtocol()
@@ -69,8 +69,6 @@ client = mqtt.Client()
 client.on_message = on_message
 client.on_connect = on_connect
 client.connect(host=conf.mqtt_addr, port=conf.mqtt_port, keepalive=conf.mqtt_alive)
-
-
 
 lastCheck = time.time()
 checkChannel = 0
@@ -106,14 +104,14 @@ while True:
                 topic = conf.mqtt_status_topic + "{:02X}:{:02X}:{:02X}".format(src[0], src[1], src[2])
                 try:
                     client.publish(topic=topic, payload=elero.eleroState[payload[6]])
-                    #wdt.feed()
+                    # wdt.feed()
                 except Exception as e:
                     print(str(e), payload[6])
                 # only makes sense to post rssi for the actual transmitter (bwd)
                 topic = conf.mqtt_rssi_topic + "{:02X}:{:02X}:{:02X}".format(bwd[0], bwd[1], bwd[2])
                 client.publish(topic=topic, payload="{:.1f}".format(rssi))
 
-    client.loop_read()
+
     checkCounter = int(time.time()) % conf.checkFreq
     # garbage collection once every checkFreq seconds
     if (checkCounter == 16) and (checkCounter != checkChannel):

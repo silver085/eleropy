@@ -59,7 +59,7 @@ def on_message(client, userdata, msg):
 def on_connect(client, userdata, flags, rc):
     print(f"Connected {userdata} {flags} {rc}")
     client.subscribe(conf.mqtt_command_topic + "#")
-    client.loop_forever()
+    print(f"Subscribed to {conf.mqtt_command_topic}#")
 
 def wdHandler():
     print("Watchdog expired! exiting...")
@@ -98,7 +98,7 @@ client = mqtt.Client()
 client.on_message = on_message
 client.on_connect = on_connect
 client.connect(host=conf.mqtt_addr, port=conf.mqtt_port, keepalive=conf.mqtt_alive)
-
+client.loop_forever()
 lastCheck = time.time()
 checkChannel = 0
 
@@ -157,4 +157,3 @@ while True:
             remoteIndex += 1
 
     wdt.reset()
-    time.sleep(0.5)

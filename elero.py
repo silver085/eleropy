@@ -64,7 +64,7 @@ client.loop_start()
 
 lastCheck=time.time()
 checkChannel=0
-
+regCheck = time.time()
 while True:
     data=radio.checkBuffer()
     if (data):
@@ -101,7 +101,7 @@ while True:
                 topic=conf.mqtt_rssi_topic+"{:02X}:{:02X}:{:02X}".format(bwd[0],bwd[1],bwd[2])
                 client.publish(topic=topic, payload="{:.1f}".format(rssi))
     else:
-        time.sleep(conf.sleepTime) # we're sharing the system on the RPi so don't busy wait
+        time.sleep(conf.sleeptTime) # we're sharing the system on the RPi so don't busy wait
 
     # check blind status - one per remote per second at the start of the checkFreq cycle
     checkCounter=int(time.time())%conf.checkFreq
@@ -113,4 +113,7 @@ while True:
                 msg=elero.construct_msg(conf.remote_addr[remoteIndex],remote[checkChannel],"Check")
                 radio.transmit(msg) # only one transmit as we'll repeat next cycle
             remoteIndex+=1
-    
+
+    if time.time() - regCheck > 2:
+        print(f"Reg val: {radio.readReg(0xF5)}")
+        regCheck = time.time()

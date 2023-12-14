@@ -101,7 +101,7 @@ while True:
                 topic=conf.mqtt_rssi_topic+"{:02X}:{:02X}:{:02X}".format(bwd[0],bwd[1],bwd[2])
                 client.publish(topic=topic, payload="{:.1f}".format(rssi))
     else:
-        time.sleep(conf.sleeptTime) # we're sharing the system on the RPi so don't busy wait
+        time.sleep(conf.sleepTime) # we're sharing the system on the RPi so don't busy wait
 
     # check blind status - one per remote per second at the start of the checkFreq cycle
     checkCounter=int(time.time())%conf.checkFreq

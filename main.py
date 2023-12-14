@@ -99,7 +99,7 @@ client = mqtt.Client()
 client.on_message = on_message
 client.on_connect = on_connect
 client.connect(host=conf.mqtt_addr, port=conf.mqtt_port, keepalive=conf.mqtt_alive)
-
+client.loop_start()
 lastCheck = time.time()
 checkChannel = 0
 

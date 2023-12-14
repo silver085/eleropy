@@ -1,10 +1,9 @@
 # the main executable for esp32 
 # should be started/imported in boot.py
 # it assumes boot.py initialises wifi
-
+import sys
 import time
 import gc
-
 from conf import conf
 from cc1101 import cc1101
 from eleroProtocol import eleroProtocol
@@ -60,6 +59,35 @@ def on_message(client, userdata, msg):
 def on_connect(client, userdata, flags, rc):
     client.subscribe(conf.mqtt_command_topic + "#")
 
+
+def wdHandler():
+    print("Watchdog expired! exiting...")
+    sys.exit()
+
+
+from threading import Timer
+
+
+class Watchdog(Exception):
+    def __init__(self, timeout, userHandler=None):  # timeout in seconds
+        self.timeout = timeout
+        self.handler = userHandler if userHandler is not None else self.defaultHandler
+        self.timer = Timer(self.timeout, self.handler)
+        self.timer.start()
+
+    def reset(self):
+        self.timer.cancel()
+        self.timer = Timer(self.timeout, self.handler)
+        self.timer.start()
+
+    def stop(self):
+        self.timer.cancel()
+
+    def defaultHandler(self):
+        raise self
+
+
+wdt = Watchdog(conf.wdtTimeout, wdHandler)
 
 radio = cc1101(spibus=conf.spibus, spics=conf.spics, speed=conf.speed, gdo0=conf.gdo0, gdo2=conf.gdo2)
 elero = eleroProtocol()
@@ -126,3 +154,6 @@ while True:
                 msg = elero.construct_msg(conf.remote_addr[remoteIndex], remote[checkChannel], "Check")
                 radio.transmit(msg)  # just one transmit - we'll check again in checkFreq seconds
             remoteIndex += 1
+
+    wdt.reset()
+    time.sleep(0.5)

@@ -114,6 +114,6 @@ while True:
                 radio.transmit(msg) # only one transmit as we'll repeat next cycle
             remoteIndex+=1
 
-    if time.time() - regCheck > 2:
+    if time.time() - regCheck > 0.5:
         print(f"Reg val: {radio.readReg(0xF5)}")
         regCheck = time.time()

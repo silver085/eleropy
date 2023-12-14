@@ -94,12 +94,12 @@ while True:
             if (typ==0xCA):
                 topic=conf.mqtt_status_topic+"{:02X}:{:02X}:{:02X}".format(src[0],src[1],src[2])
                 try:
-                    client.publish(topic, elero.eleroState[payload[6]])
+                    client.publish(topic=topic, payload=elero.eleroState[payload[6]])
                 except Exception as e:
                     print(str(e),payload[6])
                 # only makes sense to post rssi for the actual transmitter (bwd)
                 topic=conf.mqtt_rssi_topic+"{:02X}:{:02X}:{:02X}".format(bwd[0],bwd[1],bwd[2])
-                client.publish(topic, "{:.1f}".format(rssi))
+                client.publish(topic=topic, payload="{:.1f}".format(rssi))
     else:
         time.sleep(conf.sleepTime) # we're sharing the system on the RPi so don't busy wait
 

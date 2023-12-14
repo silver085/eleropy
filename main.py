@@ -105,7 +105,7 @@ checkChannel = 0
 
 while True:
     data = radio.checkBuffer()
-    client.loop_read()
+    #client.loop_read()
     if (data):
         (length, cnt, typ, chl, src, bwd, fwd, dests, payload, rssi, lqi, crc) = elero.interpretMsg(data)
         if (length > 0):  # length 0 => interpretation failed

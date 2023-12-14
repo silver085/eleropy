@@ -30,7 +30,8 @@ class cc1101():
             import RPi.GPIO as GPIO
             self.gdo0 = gdo0
             self.gdo2 = gdo2
-            self.spi = spidev.SpiDev(spibus,spics)
+            self.spi = spidev.SpiDev()
+            self.spi.open(spibus,spics)
             self.spi.max_speed_hz = speed
             GPIO.setmode(GPIO.BCM)
             GPIO.setup(self.gdo0, GPIO.IN)

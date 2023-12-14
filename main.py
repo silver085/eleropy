@@ -57,8 +57,9 @@ def on_message(client, userdata, msg):
 # wdt.feed()
 
 def on_connect(client, userdata, flags, rc):
+    print(f"Connected {userdata} {flags} {rc}")
     client.subscribe(conf.mqtt_command_topic + "#")
-
+    client.loop_forever()
 
 def wdHandler():
     print("Watchdog expired! exiting...")
@@ -139,7 +140,7 @@ while True:
                 topic = conf.mqtt_rssi_topic + "{:02X}:{:02X}:{:02X}".format(bwd[0], bwd[1], bwd[2])
                 client.publish(topic=topic, payload="{:.1f}".format(rssi))
 
-    client.loop_read()
+
     checkCounter = int(time.time()) % conf.checkFreq
     # garbage collection once every checkFreq seconds
     if (checkCounter == 16) and (checkCounter != checkChannel):

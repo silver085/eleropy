@@ -98,12 +98,13 @@ client = mqtt.Client()
 client.on_message = on_message
 client.on_connect = on_connect
 client.connect(host=conf.mqtt_addr, port=conf.mqtt_port, keepalive=conf.mqtt_alive)
-client.loop_forever()
+
 lastCheck = time.time()
 checkChannel = 0
 
 while True:
     data = radio.checkBuffer()
+    client.loop_read()
     if (data):
         (length, cnt, typ, chl, src, bwd, fwd, dests, payload, rssi, lqi, crc) = elero.interpretMsg(data)
         if (length > 0):  # length 0 => interpretation failed

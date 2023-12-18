@@ -1,6 +1,6 @@
 class conf():
     # mqtt server config - currently as simple as possible
-    mqtt_addr = '127.0.0.1'
+    mqtt_addr = 'homeassistant.local'
     mqtt_port = 1883
     mqtt_alive = 60
     mqtt_status_topic = "cc1101mqtt/status/"

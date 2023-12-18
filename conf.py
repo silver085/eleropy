@@ -10,8 +10,8 @@ class conf():
     spibus = 0  # spidev for RPi, bus num for esp32
     spics = 0  # and CS pin
     speed = 5000000
-    gdo0 = 24  # Pins using GPIO numbering for additional cc1101 signals
-    gdo2 = 25
+    gdo0 = 26  # Pins using GPIO numbering for additional cc1101 signals
+    gdo2 = 22
 
     # remotes/blinds config. 
     # Sniff the traffic to determine the 3 byte addresses and channel no.s of the blinds

@@ -11,7 +11,7 @@ class conf():
     spics = 0  # and CS pin
     speed = 5000000
     gdo0 = 26  # Pins using GPIO numbering for additional cc1101 signals
-    gdo2 = 22
+    gdo2 = 25
 
     # remotes/blinds config. 
     # Sniff the traffic to determine the 3 byte addresses and channel no.s of the blinds

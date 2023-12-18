@@ -116,5 +116,5 @@ while True:
             remoteIndex+=1
 
     if time.time() - regCheck > 10:
-        print(f"Reg val: {radio.readReg(0xF5)}")
+        #print(f"Reg val: {radio.readReg(0xF5)}")
         regCheck = time.time()

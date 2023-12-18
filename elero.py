@@ -59,6 +59,7 @@ elero=eleroProtocol()
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
+client.username_pw_set(username="esp_pub", password="esp_pub")
 client.connect(conf.mqtt_addr, conf.mqtt_port, conf.mqtt_alive)
 client.loop_start()
 
